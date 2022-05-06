@@ -359,19 +359,19 @@ function game() {
 }
 
 addEventListener('keydown', (e) => {
-    if (e.keyCode == 65) {
+    if (e.keyCode == 65 || e.keyCode == 37) {
         player.move.left = true;
     }
-    if (e.keyCode == 68) {
+    if (e.keyCode == 68 || e.keyCode == 39) {
         player.move.right = true;
     }
 });
 
 addEventListener('keyup', (e) => {
-    if (e.keyCode == 65) {
+    if (e.keyCode == 65 || e.keyCode == 37) {
         player.move.left = false;
     }
-    if (e.keyCode == 68) {
+    if (e.keyCode == 68 || e.keyCode == 39) {
         player.move.right = false;
     }
 });
