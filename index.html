@@ -1,17 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>osu ctb (scam)</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/in-game-menu.css">
 </head>
+
 <body>
+    <div id="in-game-menu">
+        <h1 id="in-game-title">THIS IS MENU</h1>
+        <div id="music-container">
+            <p id="music">
+                music:
+                <span id="music-title">
+                  nothings
+                </span> 
+                <br<br><br><br>
+                <span id="music-duration">
+                    move&click your mouse
+                </span>
+            </p>
+        </div>
+       
+        <div id="score-container">
+            <p id="score">score: <span id="score-number">0</span></p>
+            <p id="miss">miss: <span id="miss-number">0</span></p>
+        </div>
+
+        <div id="visualizer">
+            <canvas id="visualizer-canvas">
+                <p>
+                    your browser doesn't support canvas
+                </p>
+            </canvas>
+        </div>
+    </div>
 
     <canvas id="canvas"> your browser is not support canvas features from html5 pls update your browser </canvas>
-
+    <script src="beatDetector.js"></script>
     <script src="script.js"></script>
+    <script src="visualizer.js"></script>
 </body>
+
 </html>
