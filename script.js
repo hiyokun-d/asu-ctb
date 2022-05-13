@@ -74,7 +74,7 @@ function effect_circle_Generator() {
 				);
 			}
 		}
-	}, 100);
+	}, 500);
 }
 
 let player = {
@@ -223,7 +223,7 @@ function game() {
 		) {
 			setTimeout(() => {
 				notes.splice(notes.indexOf(note), 1);
-			}, 0);
+			}, 5);
 			score += 1;
 			note.color = "red";
 			if (health < 100) {
@@ -244,7 +244,7 @@ function game() {
 		} else if (note.y >= canvas.height) {
 			setTimeout(() => {
 				notes.splice(notes.indexOf(note), 1);
-			}, 0);
+			}, 5);
 			if (health > -0) {
 				health -= 10;
 			}
