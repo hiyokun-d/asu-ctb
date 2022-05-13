@@ -223,45 +223,46 @@ function game() {
 		) {
 			setTimeout(() => {
 				notes.splice(notes.indexOf(note), 1);
+				score += 1;
+				note.color = "red";
+				if (health < 100) {
+					health += 10;
+				}
+	
+				effect_text_array.push(
+					new text_effect({
+						x: note.x,
+						y: note.y,
+						text: "GOOD",
+						color: "0, 255, 0",
+						size: 20,
+						speed: 0.5,
+						opacitySpeed: 0.05,
+					})
+				);
 			}, 5);
-			score += 1;
-			note.color = "red";
-			if (health < 100) {
-				health += 10;
-			}
-
-			effect_text_array.push(
-				new text_effect({
-					x: note.x,
-					y: note.y,
-					text: "GOOD",
-					color: "0, 255, 0",
-					size: 20,
-					speed: 0.5,
-					opacitySpeed: 0.05,
-				})
-			);
 		} else if (note.y >= canvas.height) {
 			setTimeout(() => {
 				notes.splice(notes.indexOf(note), 1);
+
+				if (health > -0) {
+					health -= 10;
+				}
+	
+				miss += 1;
+	
+				effect_text_array.push(
+					new text_effect({
+						x: note.x,
+						y: note.y,
+						text: "miss",
+						color: "100, 10, 3",
+						size: 30,
+						speed: 1,
+						opacitySpeed: 0.05,
+					})
+				);
 			}, 5);
-			if (health > -0) {
-				health -= 10;
-			}
-
-			miss += 1;
-
-			effect_text_array.push(
-				new text_effect({
-					x: note.x,
-					y: note.y,
-					text: "miss",
-					color: "100, 10, 3",
-					size: 30,
-					speed: 1,
-					opacitySpeed: 0.05,
-				})
-			);
 		}
 	});
 	/* end of notes */
