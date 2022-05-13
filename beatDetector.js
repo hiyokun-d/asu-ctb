@@ -24,6 +24,59 @@ analyser.fftSize = 2048;
 let bufferLength = analyser.frequencyBinCount;
 let dataArray = new Uint8Array(bufferLength);
 
+let music_list = [
+	"Atmosfera  Tak Tau Malu",
+	"Gen Hoshino comedy",
+	"Goose House  Hikaru Nara",
+	"Let Me Down Slowly  Alec Benjamin  Alex Goot Jada Facer",
+	"Ohara yui-ko no `sutoreto' myujikkubideo",
+	"Original SongCukup  Mythia Batford",
+	"Rokudenashi",
+	"Stand Still  Yuka Iguichi",
+	"Sukidakara Yuika Cover by Alia Adelia x Kururu",
+	"YOASOBI  Ano Yume wo Nazotte",
+	"Windah Basudara Nyanyi Lagu Kimi No Nawa Kalo Rekamnya Di Studio",
+	"Windah Basudara  Napos 80s Synthwave ver",
+	"Cheriimoya  Living Life In The Night feat Sierra Kidd Official Audio",
+	"Dont Wanna KnowWe Dont Talk Anymore MASHUP",
+	"Koe no Katachi A Silent Voice OST",
+	"Lagu Bocil Kematian Kalo Dicover Sama Nirvana",
+	"ORIGINAL SONG Mantra Hujan  Kobo Kanaeru hololive Indonesia 3rd Gen",
+	"sparkle kimi no na wa",
+	"Virtual Medley Lagu Daerah  hololive ID Cover",
+	"SMVLL  Happy Ajalah Official Music VIdeo",
+	"Lagu Untuk Ibu Ft Diaz Official",
+	"Lagu Tentang Cicak di dinding Parody Cover",
+	"JJD  Vertigo Feat Cecilia Gault",
+	"Heat Waves Glass animals x HighCloud Cover",
+	"enau Negara Lucu Official Video Lyric",
+	"Elley Duhe MIDDLE OF THE NIGHT",
+	"Alan Walker vs Coldplay Hymn For The Weekend Remix",
+	"7 Orange Shigatsu wa Kimi no Uso",
+	"We Dont Talk Anymore vs Attention MASHUP  Remix",
+	"One Direction  night changes Gustixa ft Alsa",
+	"Hololive Song  Gawr Gura SingMaroon 5  Payphone",
+	"Badut - Raavfy",
+	"Paripi Koumei  Opening  Chitty Chitty Bang Bang",
+	"Ikimono gakari  Netsujou no Spectrum Nanatsu no Taizai",
+	"Aaron Smith  Dancin RemixCover  CG5",
+	"Zenryoku ShounenSukima Switch - Indonesian Version",
+	"Zenryoku ShounenEka Gustiwana  Nada Syakira Cover",
+	"Yoasobi - Tabun",
+	"Super Idol Bahasa Malaysia Cover feat Liliana Vampaia",
+	"Sukima Switch  Zenryoku Shounen",
+	"Sofia - Clairo",
+	"kegabutan developernya (maya putri nelpon)",
+	"RADWIMPS  Ai ni Dekiru Koto wa Mada Aru Kai Cover maya putri",
+	"Nanairo -  Symphony",
+	"Maya Putri - Nada Nada Cinta",
+	"LAGU JOMBLO PENCARI AYANG",
+	"Clairo - sofia Gustixa Remix",
+	"Gamma1 - Jomblo Happy",
+];
+
+let music_randomize_Play = music_list[Math.floor(Math.random() * music_list.length)];
+
 //detect beat
 function getRMS(array) {
 	let rms = 0;
@@ -36,26 +89,36 @@ function getRMS(array) {
 }
 
 function getBeat(array) {
-		let rms = getRMS(array);
+	let rms = getRMS(array);
 	let threshold = rms * 0.1;
-	let beat = false;
 	for (let i = 0; i < array.length; i++) {
-		if (array[i] > threshold && array[i] > array[i - 1] && array[i] > array[i + 1]) {
-			beat = true;
-		} else if(array[i] < threshold && array[i] < array[i - 1] && array[i] < array[i + 1]) {
-			beat = false;
+		if (
+			array[i] > threshold &&
+			array[i] > array[i - 1] &&
+			array[i] > array[i + 1] &&
+			array[i] > array[i - 2] &&
+			array[i] > array[i + 2] &&
+			array[i] > array[i - 3] &&
+			array[i] > array[i + 3] &&
+			array[i] > array[i - 4] &&
+			array[i] > array[i + 4]
+		) {
+			return true;
+		} else if (
+			array[i] < threshold &&
+			array[i] < array[i - 1] &&
+			array[i] < array[i + 1] &&
+			array[i] < array[i - 2] &&
+			array[i] < array[i + 2] &&
+			array[i] < array[i - 3] &&
+			array[i] < array[i + 3] &&
+			array[i] < array[i - 4] &&
+			array[i] < array[i + 4] &&
+			beat
+		) {
+			return false;
+		}
 	}
-	}
-	return beat;
-}
-
-function detectBeat() {
-	analyser.getByteFrequencyData(dataArray);
-	let beat = getBeat(dataArray);
-	if (beat) {
-		// console.log("beat");
-		return true	
-	}
-
 	return false;
 }
+

@@ -9,7 +9,7 @@
     align-items: center;
     justify-content: center;
 
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 20px;
     color: rgb(209, 209, 209);
     text-align: center;
@@ -26,7 +26,7 @@
 
 }
 
-#in-game-menu > #in-game-title {
+#in-game-menu>#in-game-title {
     animation: menu-title 1s forwards;
     transform: translateY(-325px);
 }
@@ -44,7 +44,7 @@
     }
 }
 
-#in-game-menu > #music-container {
+#in-game-menu>#music-container {
     transform: translateY(-150px) translateX(-45px);
     background-color: #a9a9a9ad;
     width: 310px;
@@ -67,7 +67,7 @@
     }
 }
 
-#in-game-menu > #music-container > p {
+#in-game-menu>#music-container>p {
     animation: music-container-p 1s forwards;
 }
 
@@ -81,7 +81,7 @@
     }
 }
 
-#in-game-menu > #score-container {
+#in-game-menu>#score-container {
     transform: translateY(-150px) translateX(45px);
     background-color: #a9a9a9ad;
     width: 310px;
@@ -106,7 +106,7 @@
     }
 }
 
-#in-game-menu > #score-container > #score {
+#in-game-menu>#score-container>#score {
     animation: score-container-score 1s forwards;
 }
 
@@ -120,7 +120,7 @@
     }
 }
 
-#in-game-menu > #score-container > #miss {
+#in-game-menu>#score-container>#miss {
     animation: score-container-miss 1s forwards;
 }
 
@@ -146,7 +146,7 @@
 
 }
 
-#visualizer > #visualizer-canvas {
+#visualizer>#visualizer-canvas {
     transform: translateY(300px);
     width: 500px;
     height: 100px;

@@ -24,7 +24,7 @@ function visualizer() {
     }
     visualizer_ctx.lineTo(visualizer_canvas.width, visualizer_canvas.height / 2);
     visualizer_ctx.stroke();
-    
+
     //line top to bottom
     // analyser.getByteFrequencyData(dataArray);
     // visualizer_ctx.fillStyle = "rgb(0, 0, 0)";
@@ -107,7 +107,7 @@ function visualizer() {
     //     x += barWidth + 1;
     // }
 
-	requestAnimationFrame(visualizer);
+    requestAnimationFrame(visualizer);
 }
 
 
