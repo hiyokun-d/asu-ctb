@@ -12,10 +12,12 @@ let score_number = document.getElementById("score-number");
 let miss_text = document.getElementById("miss");
 let miss_number = document.getElementById("miss-number");
 let music_duration_show = document.getElementById("music-duration");
-let visualizer_div = document.getElementById("visualizer-canvas");
+let visualizer_div = document.querySelector(".visualizer-canvas");
+
+let music_duration_adjust;
 
 let music = new Audio();
-let audioCtx = new AudioContext();
+let audioCtx = new (window.AudioContext || window.webkitAudioContext);
 let analyser = audioCtx.createAnalyser();
 let source = audioCtx.createMediaElementSource(music);
 source.connect(analyser);
@@ -73,11 +75,16 @@ let music_list = [
 	"LAGU JOMBLO PENCARI AYANG",
 	"Clairo - sofia Gustixa Remix",
 	"Gamma1 - Jomblo Happy",
+	"Happy - Skinnyfabs",
+	"HAPPY Versi Bahasa Indonesia  Skinnyfabs Cover Melowmask",
+	"Lagu untuk gambar 2D  Parody",
+	"Momokuri opening full",
+	"SAYKOJI  SUKSES FT GAMAL GANDHI",
+	"SAYKOJI - TRUE COLORS",
 ];
 
 let music_randomize_Play = music_list[Math.floor(Math.random() * music_list.length)];
 
-//detect beat
 function getRMS(array) {
 	let rms = 0;
 	for (let i = 0; i < array.length; i++) {
@@ -121,5 +128,3 @@ function getBeat(array) {
 	}
 	return false;
 }
-
-//

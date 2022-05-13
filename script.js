@@ -1,5 +1,5 @@
 canvas.height = "780";
-canvas.width = "700"
+canvas.width = "700";
 
 let score = 0;
 let miss = 0;
@@ -10,40 +10,39 @@ let effect_text_array = [];
 function music_Notes_Generator() {
 	setInterval(() => {
 		let x = Math.floor(Math.random() * canvas.width - 50);
-		let y = 0;
-		let width = 20;
-		let height = 20;
-		let color = `rgb(
-            ${Math.floor(Math.random() * 255) + 1},
-            ${Math.floor(Math.random() * 255) + 1}, 
-            ${Math.floor(Math.random() * 255) + 1})`;
+
 		let music_notes_symbol = "♩♪♫♬♩♪♫♬♭♮♮♩♪♪";
 
 		//make the speed is follow the beat
 		let notes_limit = 10;
-		if (music.paused || music.muted) {
+		if (
+			music.paused ||
+			music.muted ||
+			music_randomize_Play == "kegabutan developernya (maya putri nelpon)" ||
+			notes.length >= notes_limit
+		) {
 			return;
 		}
 
 		//detect beat of music and generate notes
-		if (getBeat(dataArray) && music_randomize_Play !== "kegabutan developernya (maya putri nelpon)") {
-			if (notes.length <= notes_limit) {
-				let notes_symbol =
-					music_notes_symbol[
-						Math.floor(Math.random() * music_notes_symbol.length)
-					];
-				notes.push(
-					new music_Notes({
-						x: x,
-						y: y,
-						width: width,
-						height: height,
-						color: color,
-						notes: notes_symbol,
-						speed: 5,
-					})
-				);
-			}
+		if (getBeat(dataArray)) {
+			let notes_symbol =
+				music_notes_symbol[
+					Math.floor(Math.random() * music_notes_symbol.length)
+				];
+			notes.push(
+				new music_Notes({
+					x: x,
+					y: 0,
+					width: 20,
+					height: 20,
+					color: `#7BFCE6`,
+					notes: notes_symbol,
+					speed: 5,
+				})
+			);
+		} else {
+			return;
 		}
 	}, 500);
 }
@@ -90,37 +89,36 @@ let player = {
 	},
 };
 
-
-// Nanairo Symphony 
+// Nanairo Symphony
 
 let health = 100;
-let background_opacity = 40
+let background_opacity = 40;
 
 function music_config() {
 	music.src = `music/${music_randomize_Play}.mp3`;
 
 	console.log(music);
-	console.log(music.error)
+	console.log(music.error);
 
 	addEventListener("mousemove", (e) => {
 		music.play();
 		music.muted = false;
-		music.controls = true
-		music.autoplay = true
+		music.controls = true;
+		music.autoplay = true;
 		audioCtx.resume();
-	})
+	});
 
 	music.addEventListener("ended", () => {
 		music.muted = true;
-		music.pause()
-		music_randomize_Play = music_list[Math.floor(Math.random() * music_list.length)];
+		music.pause();
+		music_randomize_Play =
+			music_list[Math.floor(Math.random() * music_list.length)];
 		music.src = `music/${music_randomize_Play}.mp3`;
 		notes = [];
 		effect_circle_array = [];
-		alert("Music is over")
-	})
+		alert("Music is over");
+	});
 }
-
 
 let light_Color = "178,34,34";
 let light_opacity = {
@@ -137,21 +135,6 @@ function game() {
 
 	score_number.innerText = score;
 	miss_number.innerText = miss;
-	if (window.innerWidth < 700) {
-		canvas.width = innerWidth;
-
-		if (player.x > canvas.width - player.width) {
-			player.x = canvas.width - player.width;
-		}
-	} else {
-		canvas.width = 700;
-	}
-
-	if (window.innerHeight < 780) {
-		canvas.height = innerHeight;
-	} else {
-		canvas.height = 780;
-	}
 
 	player.y = canvas.height - 50;
 
@@ -190,23 +173,6 @@ function game() {
 	// })
 	/* end of effect circle */
 
-	/* text */
-	let text_mouse_size = 30;
-	let text_mouse_opacity = 1;
-	if (music.paused) {
-		ctx.beginPath();
-		ctx.font = `${text_mouse_size}px arial-new`;
-		ctx.fillStyle = `RGBA(50,70,55,${text_mouse_opacity})`;
-		ctx.fillText(
-			"move&click your mouse to play the music",
-			canvas.width / 2 - 250,
-			canvas.height / 2
-		);
-		ctx.closePath();
-	}
-	/* end of text */
-
-	/* notes */
 	/* notes */
 	notes.forEach((note) => {
 		note.draw_notes();
@@ -216,19 +182,20 @@ function game() {
         || r1.x+r1.w<r2.x 
         || r1.y>r2.y+r2.h 
         || r1.y+r1.h<r2.y); */
-		if (note.x + note.width > player.x &&
+		if (
+			note.x + note.width > player.x &&
 			note.x < player.x + player.width &&
 			note.y + note.height > player.y &&
 			note.y < player.y + player.height
 		) {
 			setTimeout(() => {
-				notes.splice(notes.indexOf(note), 1);
+				notes.splice(notes.lastIndexOf(note), 1);
 				score += 1;
 				note.color = "red";
 				if (health < 100) {
 					health += 10;
 				}
-	
+
 				effect_text_array.push(
 					new text_effect({
 						x: note.x,
@@ -240,17 +207,19 @@ function game() {
 						opacitySpeed: 0.05,
 					})
 				);
-			}, 5);
-		} else if (note.y >= canvas.height) {
+			}, 5-0);
+		}
+
+		if (note.y >= canvas.height) {
 			setTimeout(() => {
-				notes.splice(notes.indexOf(note), 1);
+				notes.splice(notes.lastIndexOf(note), 1);
 
 				if (health > -0) {
 					health -= 10;
 				}
-	
+
 				miss += 1;
-	
+
 				effect_text_array.push(
 					new text_effect({
 						x: note.x,
@@ -262,16 +231,25 @@ function game() {
 						opacitySpeed: 0.05,
 					})
 				);
-			}, 5);
+			}, -50);
 		}
 	});
 	/* end of notes */
 
 	/* easter egg */
-	if (music_randomize_Play == "kegabutan developernya (maya putri nelpon)" && !music.paused) {
+	if (
+		music_randomize_Play == "kegabutan developernya (maya putri nelpon)" &&
+		!music.paused
+	) {
 		ctx.font = "bold 41px sans-serif";
-		ctx.fillStyle = `RGBA(${Math.floor(Math.random() * 255)}, ${Math.floor( Math.random() * 255)}, ${Math.floor( Math.random() * 255)}, ${Math.random()})`;
-		ctx.fillText("ada telpon nih, wait", canvas.width / 2 - 200, canvas.height / 2);
+		ctx.fillStyle = `RGBA(${Math.floor(Math.random() * 255)}, ${Math.floor(
+			Math.random() * 255
+		)}, ${Math.floor(Math.random() * 255)}, ${Math.random()})`;
+		ctx.fillText(
+			"ada telpon nih, wait",
+			canvas.width / 2 - 200,
+			canvas.height / 2
+		);
 	}
 
 	/* effect text */
@@ -308,16 +286,17 @@ function game() {
 		let duration_time_minutes = Math.floor(duration_time / 60);
 		let duration_time_seconds = Math.floor(duration_time % 60);
 		duration_time_seconds =
-			duration_time_seconds < 10 ?
-			"0" + duration_time_seconds :
-			duration_time_seconds;
+			duration_time_seconds < 10
+				? "0" + duration_time_seconds
+				: duration_time_seconds;
 		duration_time_minutes =
-			duration_time_minutes < 10 ?
-			"0" + duration_time_minutes :
-			duration_time_minutes;
+			duration_time_minutes < 10
+				? "0" + duration_time_minutes
+				: duration_time_minutes;
 
 		music_duration_show.innerText = `${duration_time_minutes}:${duration_time_seconds}`;
-
+		music_duration_adjust = `${duration_time_minutes}:${duration_time_seconds}`;
+		
 		ctx.beginPath();
 		ctx.fillStyle = "white";
 		ctx.fillRect(
@@ -377,7 +356,7 @@ function game() {
 	requestAnimationFrame(game);
 }
 
-addEventListener('keydown', (e) => {
+addEventListener("keydown", (e) => {
 	if (e.keyCode == 65 || e.keyCode == 37 || e.keyCode == 70) {
 		player.move.left = true;
 	}
@@ -386,7 +365,7 @@ addEventListener('keydown', (e) => {
 	}
 });
 
-addEventListener('keyup', (e) => {
+addEventListener("keyup", (e) => {
 	if (e.keyCode == 65 || e.keyCode == 37 || e.keyCode == 70) {
 		player.move.left = false;
 	}
@@ -395,29 +374,27 @@ addEventListener('keyup', (e) => {
 	}
 });
 
-let mouseIsClick = false
-canvas.addEventListener('mousedown', (e) => {
-	mouseIsClick = true
-})
+let mouseIsClick = false;
+canvas.addEventListener("mousedown", (e) => {
+	mouseIsClick = true;
+});
 
-canvas.addEventListener('mouseup', (e) => {
-	mouseIsClick = false
-})
+canvas.addEventListener("mouseup", (e) => {
+	mouseIsClick = false;
+});
 
-canvas.addEventListener('mousemove', (e) => {
+canvas.addEventListener("mouseout", (e) => {
+	mouseIsClick = false;
+});
+
+canvas.addEventListener("mousemove", (e) => {
 	if (mouseIsClick) {
 		player.x = e.clientX - player.width / 2 - canvas.offsetLeft;
 	}
 });
 
 class effect_circle {
-	constructor({
-		x,
-		y,
-		opacitySpeed,
-		radiusSpeed,
-		color
-	}) {
+	constructor({ x, y, opacitySpeed, radiusSpeed, color }) {
 		this.x = x;
 		this.y = y;
 		this.radius = 0;
@@ -445,15 +422,7 @@ class effect_circle {
 }
 
 class music_Notes {
-	constructor({
-		x,
-		y,
-		width,
-		height,
-		color,
-		speed,
-		notes = "??"
-	}) {
+	constructor({ x, y, width, height, color, speed, notes = "??" }) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -482,14 +451,7 @@ class music_Notes {
 }
 
 class effect_rectangle {
-	constructor({
-		x,
-		width,
-		height,
-		opacitySpeed,
-		color,
-		speed
-	}) {
+	constructor({ x, width, height, opacitySpeed, color, speed }) {
 		this.x = x;
 		this.y = canvas.height - height;
 		this.width = width;
@@ -510,19 +472,10 @@ class effect_rectangle {
 	move() {
 		this.y += this.speed;
 	}
-
 }
 
 class text_effect {
-	constructor({
-		x,
-		y,
-		size,
-		text,
-		color,
-		speed,
-		opacitySpeed
-	}) {
+	constructor({ x, y, size, text, color, speed, opacitySpeed }) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -530,7 +483,7 @@ class text_effect {
 		this.color = color;
 		this.speed = speed;
 		this.opacity = 0;
-		this.opacitySpeed = opacitySpeed
+		this.opacitySpeed = opacitySpeed;
 	}
 
 	draw() {
@@ -552,8 +505,3 @@ class text_effect {
 		}, 500);
 	}
 }
-
-music_config();
-music_Notes_Generator();
-game();
-effect_circle_Generator();

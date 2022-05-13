@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/in-game-menu.css">
+    <link rel="stylesheet" href="style/music_canvas.css">
 </head>
 
 <body>
@@ -23,25 +24,62 @@
                 </span>
             </p>
         </div>
-       
+        
         <div id="score-container">
             <p id="score">score: <span id="score-number">0</span></p>
             <p id="miss">miss: <span id="miss-number">0</span></p>
         </div>
-
-        <div id="visualizer">
-            <canvas id="visualizer-canvas">
+        
+        <div class="visualizer">
+            <canvas class="visualizer-canvas">
                 <p>
                     your browser doesn't support canvas
                 </p>
             </canvas>
         </div>
     </div>
+    
+    
+    <noscript>
+        <p id="no-script">
+            <span>
+                You need to enable JavaScript to run this app.
+            </span>
+        </p>
+    </noscript>
+    
+    <div id="music_canvas">
+        <p>
+            CLICK&MOVE ON THIS CANVAS
+        </p>
+    </div>
 
+    
+    <div id="music_config_adjust">
+        <div id="music_title_adjust">
+            <h1 id="title">no music</h1>
+            <p id="duration">00:00</p>
+        </div>
+
+        <div id="score-and-miss">
+            <span id="score_adjust">0 |</span>
+            <span id="miss_adjust">| 0</span>
+        </div>
+        
+        <div class="visualizer">
+            <canvas class="visualizer-canvas">
+                <p>
+                    your browser doesn't support canvas
+                </p>
+            </canvas>
+        </div>
+    </div>
     <canvas id="canvas"> your browser is not support canvas features from html5 pls update your browser </canvas>
+    
     <script src="beatDetector.js"></script>
     <script src="script.js"></script>
     <script src="visualizer.js"></script>
+    <script src="screen_adjust.js"></script>
 </body>
 
 </html>
