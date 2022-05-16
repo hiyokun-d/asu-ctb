@@ -14,10 +14,13 @@ let miss_number = document.getElementById("miss-number");
 let music_duration_show = document.getElementById("music-duration");
 let visualizer_div = document.querySelector(".visualizer-canvas");
 
+let TITLE = document.querySelector(" #music_title_adjust > #title");
+let DURATION = document.querySelector("#music_title_adjust > #duration");
+
 let music_duration_adjust;
 
 let music = new Audio();
-let audioCtx = new (window.AudioContext || window.webkitAudioContext);
+let audioCtx = new(window.AudioContext || window.webkitAudioContext);
 let analyser = audioCtx.createAnalyser();
 let source = audioCtx.createMediaElementSource(music);
 source.connect(analyser);
@@ -27,6 +30,7 @@ let bufferLength = analyser.frequencyBinCount;
 let dataArray = new Uint8Array(bufferLength);
 
 let music_list = [
+	"SAYKOJI - JALAN PANJANG ft GUNTUR SIMBOLON",
 	"Atmosfera  Tak Tau Malu",
 	"Gen Hoshino comedy",
 	"Goose House  Hikaru Nara",
@@ -81,6 +85,7 @@ let music_list = [
 	"Momokuri opening full",
 	"SAYKOJI  SUKSES FT GAMAL GANDHI",
 	"SAYKOJI - TRUE COLORS",
+	"LAGU UNTUK KALIAN  Animal Crossing  Bubblegum KK Parody",
 ];
 
 let music_randomize_Play = music_list[Math.floor(Math.random() * music_list.length)];
@@ -120,11 +125,82 @@ function getBeat(array) {
 			array[i] < array[i - 3] &&
 			array[i] < array[i + 3] &&
 			array[i] < array[i - 4] &&
-			array[i] < array[i + 4] &&
-			beat
+			array[i] < array[i + 4]
 		) {
 			return false;
 		}
 	}
 	return false;
+}
+
+
+class effect_rectangle {
+	constructor({
+		x,
+		width,
+		height,
+		opacitySpeed,
+		color,
+		speed
+	}) {
+		this.x = x;
+		this.y = canvas.height - height;
+		this.width = width;
+		this.height = height;
+		this.opacity = 0;
+		this.opacitySpeed = opacitySpeed;
+		this.color = color;
+		this.speed = speed;
+	}
+
+	draw() {
+		ctx.beginPath();
+		ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+		ctx.fillRect(this.x, this.y, this.width, this.height);
+		ctx.closePath();
+	}
+
+	move() {
+		this.y += this.speed;
+	}
+}
+
+class text_effect {
+	constructor({
+		x,
+		y,
+		size,
+		text,
+		color,
+		speed,
+		opacitySpeed
+	}) {
+		this.x = x;
+		this.y = y;
+		this.size = size;
+		this.text = text || "undenfined";
+		this.color = color;
+		this.speed = speed;
+		this.opacity = 0;
+		this.opacitySpeed = opacitySpeed;
+	}
+
+	draw() {
+		ctx.font = `${this.size}px Arial`;
+		ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+		ctx.fillText(this.text, this.x, this.y);
+	}
+
+	move() {
+		this.y -= this.speed;
+		if (this.opacity <= 0.5) {
+			this.opacity += this.opacitySpeed;
+		}
+	}
+
+	fade_out() {
+		setInterval(() => {
+			this.opacity -= this.opacitySpeed;
+		}, 500);
+	}
 }

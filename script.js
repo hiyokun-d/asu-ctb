@@ -6,6 +6,7 @@ let miss = 0;
 
 let notes = [];
 let effect_text_array = [];
+let player_focus = false;
 
 function music_Notes_Generator() {
 	setInterval(() => {
@@ -24,12 +25,19 @@ function music_Notes_Generator() {
 			return;
 		}
 
+		let speed
+
+		if (player_focus) {
+			speed = 5;
+			
+			console.log(speed)
+			
 		//detect beat of music and generate notes
 		if (getBeat(dataArray)) {
 			let notes_symbol =
-				music_notes_symbol[
-					Math.floor(Math.random() * music_notes_symbol.length)
-				];
+			music_notes_symbol[
+				Math.floor(Math.random() * music_notes_symbol.length)
+			];
 			notes.push(
 				new music_Notes({
 					x: x,
@@ -38,11 +46,25 @@ function music_Notes_Generator() {
 					height: 20,
 					color: `#7BFCE6`,
 					notes: notes_symbol,
-					speed: 5,
+					speed: speed,
 				})
-			);
+				);
+			} else {
+				return;
+			}
+			canvas.style.filter = "blur(0px)";
+			canvas.style.transition = "filter 1s";
+			
+			TITLE.style.color = "#222"
+			TITLE.style.transition = "color 1s"
 		} else {
-			return;
+			TITLE.style.color = "red"
+			TITLE.style.transition = "color 1s"
+
+			canvas.style.transition = "filter 1s";
+			canvas.style.filter = "blur(15px)";
+
+			speed = 0;
 		}
 	}, 500);
 }
@@ -52,7 +74,7 @@ let effect_circle_array_limit = 5;
 
 function effect_circle_Generator() {
 	setInterval(() => {
-		if (music.paused || music.muted) {
+		if (music.paused || music.muted || !player_focus) {
 			return;
 		}
 
@@ -127,6 +149,13 @@ let light_opacity = {
 };
 
 function game() {
+
+	if (document.hasFocus()) {
+		player_focus = true;
+	} else {
+		player_focus = false;
+	}
+	
 	if (!music.paused) {
 		music_title.innerText = music_randomize_Play;
 	} else {
@@ -178,10 +207,30 @@ function game() {
 		note.draw_notes();
 		note.move();
 
-		/*     return !(r1.x>r2.x+r2.w 
-        || r1.x+r1.w<r2.x 
-        || r1.y>r2.y+r2.h 
-        || r1.y+r1.h<r2.y); */
+		if (note.y >= canvas.height) {
+			setTimeout(() => {
+				notes.splice(notes.lastIndexOf(note), 1);
+
+				if (health > -0) {
+					health -= 10;
+				}
+
+				miss += 1;
+
+				effect_text_array.push(
+					new text_effect({
+						x: note.x,
+						y: note.y,
+						text: "miss",
+						color: "100, 10, 3",
+						size: 30,
+						speed: 1,
+						opacitySpeed: 0.05,
+					})
+				);
+			}, -50);
+		}
+
 		if (
 			note.x + note.width > player.x &&
 			note.x < player.x + player.width &&
@@ -204,30 +253,6 @@ function game() {
 						color: "0, 255, 0",
 						size: 20,
 						speed: 0.5,
-						opacitySpeed: 0.05,
-					})
-				);
-			}, 5-0);
-		}
-
-		if (note.y >= canvas.height) {
-			setTimeout(() => {
-				notes.splice(notes.lastIndexOf(note), 1);
-
-				if (health > -0) {
-					health -= 10;
-				}
-
-				miss += 1;
-
-				effect_text_array.push(
-					new text_effect({
-						x: note.x,
-						y: note.y,
-						text: "miss",
-						color: "100, 10, 3",
-						size: 30,
-						speed: 1,
 						opacitySpeed: 0.05,
 					})
 				);
@@ -286,17 +311,17 @@ function game() {
 		let duration_time_minutes = Math.floor(duration_time / 60);
 		let duration_time_seconds = Math.floor(duration_time % 60);
 		duration_time_seconds =
-			duration_time_seconds < 10
-				? "0" + duration_time_seconds
-				: duration_time_seconds;
+			duration_time_seconds < 10 ?
+			"0" + duration_time_seconds :
+			duration_time_seconds;
 		duration_time_minutes =
-			duration_time_minutes < 10
-				? "0" + duration_time_minutes
-				: duration_time_minutes;
+			duration_time_minutes < 10 ?
+			"0" + duration_time_minutes :
+			duration_time_minutes;
 
 		music_duration_show.innerText = `${duration_time_minutes}:${duration_time_seconds}`;
 		music_duration_adjust = `${duration_time_minutes}:${duration_time_seconds}`;
-		
+
 		ctx.beginPath();
 		ctx.fillStyle = "white";
 		ctx.fillRect(
@@ -394,7 +419,13 @@ canvas.addEventListener("mousemove", (e) => {
 });
 
 class effect_circle {
-	constructor({ x, y, opacitySpeed, radiusSpeed, color }) {
+	constructor({
+		x,
+		y,
+		opacitySpeed,
+		radiusSpeed,
+		color
+	}) {
 		this.x = x;
 		this.y = y;
 		this.radius = 0;
@@ -422,7 +453,15 @@ class effect_circle {
 }
 
 class music_Notes {
-	constructor({ x, y, width, height, color, speed, notes = "??" }) {
+	constructor({
+		x,
+		y,
+		width,
+		height,
+		color,
+		speed,
+		notes = "??"
+	}) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -447,61 +486,5 @@ class music_Notes {
 
 	move() {
 		this.y += this.speed;
-	}
-}
-
-class effect_rectangle {
-	constructor({ x, width, height, opacitySpeed, color, speed }) {
-		this.x = x;
-		this.y = canvas.height - height;
-		this.width = width;
-		this.height = height;
-		this.opacity = 0;
-		this.opacitySpeed = opacitySpeed;
-		this.color = color;
-		this.speed = speed;
-	}
-
-	draw() {
-		ctx.beginPath();
-		ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-		ctx.fillRect(this.x, this.y, this.width, this.height);
-		ctx.closePath();
-	}
-
-	move() {
-		this.y += this.speed;
-	}
-}
-
-class text_effect {
-	constructor({ x, y, size, text, color, speed, opacitySpeed }) {
-		this.x = x;
-		this.y = y;
-		this.size = size;
-		this.text = text || "undenfined";
-		this.color = color;
-		this.speed = speed;
-		this.opacity = 0;
-		this.opacitySpeed = opacitySpeed;
-	}
-
-	draw() {
-		ctx.font = `${this.size}px Arial`;
-		ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-		ctx.fillText(this.text, this.x, this.y);
-	}
-
-	move() {
-		this.y -= this.speed;
-		if (this.opacity <= 0.5) {
-			this.opacity += this.opacitySpeed;
-		}
-	}
-
-	fade_out() {
-		setInterval(() => {
-			this.opacity -= this.opacitySpeed;
-		}, 500);
 	}
 }

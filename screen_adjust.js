@@ -7,8 +7,6 @@ function screen_adjusment() {
 
     let music_config_adjust = document.querySelector('#music_config_adjust')
     let music_title_adjust = document.querySelector('#music_title_adjust #music_title_adjust')
-    let TITLE = document.querySelector(' #music_title_adjust > #title')
-    let DURATION = document.querySelector('#music_title_adjust > #duration')
 
     let miss_adjust = document.querySelector('#score-and-miss > #miss_adjust')
     let score_adjust = document.querySelector('#score-and-miss > #score_adjust')
@@ -41,8 +39,7 @@ function screen_adjusment() {
                     style_music_canvas.display = "none"
                 }, 700)
             }, 1500);
-
-
+            
             setTimeout(() => {
                 TITLE.style.animation = "fade-out 0.5s linear forwards"
             }, 60000);
