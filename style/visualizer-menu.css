@@ -1,0 +1,52 @@
+.visualizer-menu-container {
+    display: none;
+    flex-direction: column;
+
+    width: 100%;
+    border: 5px solid black;
+    border-radius: 30px;
+    overflow: hidden;
+    position: absolute;
+    transform: translateY(245px);
+}
+
+.visualizer-menu-container button {
+    background-color: rgb(57, 57, 57) ;
+    text-align: center;
+    text-decoration: dashed;
+    color: rgb(135, 135, 135);
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.visualizer-menu-container button:active {
+    background-color: rgb(200, 200, 200);
+    color: rgb(69, 69, 69);
+}
+
+.visualizer-menu-container h1 {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(220, 220, 220);
+    margin: 0;
+    padding: 0;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(-250px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}

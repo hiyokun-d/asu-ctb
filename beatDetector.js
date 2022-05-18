@@ -16,7 +16,13 @@ let visualizer_div = document.querySelector(".visualizer-canvas");
 
 let TITLE = document.querySelector(" #music_title_adjust > #title");
 let DURATION = document.querySelector("#music_title_adjust > #duration");
-
+let visualizer_menu_container = document.querySelector(".visualizer-menu-container");
+let visualizer_menu_container_H1 = document.querySelector(".visualizer-menu-container > h1");
+let visualizer_menu_container_button1 = document.querySelector(".visualizer-menu-container > #button-visualizer1");
+let visualizer_menu_container_button2 = document.querySelector(".visualizer-menu-container > #button-visualizer2");
+let visualizer_menu_container_button3 = document.querySelector(".visualizer-menu-container > #button-visualizer3");
+let visualizer_menu_container_button4 = document.querySelector(".visualizer-menu-container > #button-visualizer4");
+let visualizer_menu_container_button5 = document.querySelector(".visualizer-menu-container > #button-visualizer5");
 let music_duration_adjust;
 
 let music = new Audio();
@@ -28,6 +34,40 @@ analyser.connect(audioCtx.destination);
 analyser.fftSize = 2048;
 let bufferLength = analyser.frequencyBinCount;
 let dataArray = new Uint8Array(bufferLength);
+
+setTimeout(() => {
+	visualizer_menu_container.style.display = "flex";
+	visualizer_menu_container.style.animation = "fadeIn 0.5s forwards";
+}, 1000)
+
+let visualizer_menu = [
+	{
+		name: "visualizer1",
+		visualizer1: true
+	}, 
+	
+	{
+		name: "visualizer2",
+		visualizer2: false,
+	}, 
+	
+	{
+		name: "visualizer3",
+		visualizer3: false,
+	},
+	
+	{
+		name: "visualizer4",
+		visualizer4: false,
+	}, 
+	
+	{
+		name: "visualizer5",
+		visualizer5: false,
+	}, 
+	
+]
+
 
 let music_list = [
 	"SAYKOJI - JALAN PANJANG ft GUNTUR SIMBOLON",

@@ -4,7 +4,7 @@ canvas.width = "700";
 let score = 0;
 let miss = 0;
 
-let notes = [];
+let notes_array = [];
 let effect_text_array = [];
 let player_focus = false;
 
@@ -20,7 +20,7 @@ function music_Notes_Generator() {
 			music.paused ||
 			music.muted ||
 			music_randomize_Play == "kegabutan developernya (maya putri nelpon)" ||
-			notes.length >= notes_limit
+			notes_array.length >= notes_limit
 		) {
 			return;
 		}
@@ -29,32 +29,32 @@ function music_Notes_Generator() {
 
 		if (player_focus) {
 			speed = 5;
-			
+
 			console.log(speed)
-			
-		//detect beat of music and generate notes
-		if (getBeat(dataArray)) {
-			let notes_symbol =
-			music_notes_symbol[
-				Math.floor(Math.random() * music_notes_symbol.length)
-			];
-			notes.push(
-				new music_Notes({
-					x: x,
-					y: 0,
-					width: 20,
-					height: 20,
-					color: `#7BFCE6`,
-					notes: notes_symbol,
-					speed: speed,
-				})
+
+			//detect beat of music and generate notes
+			if (getBeat(dataArray)) {
+				let notes_symbol =
+					music_notes_symbol[
+						Math.floor(Math.random() * music_notes_symbol.length)
+					];
+				notes_array.push(
+					new music_Notes({
+						x: x,
+						y: 0,
+						width: 20,
+						height: 20,
+						color: `#7BFCE6`,
+						notes: notes_symbol,
+						speed: speed,
+					})
 				);
 			} else {
 				return;
 			}
 			canvas.style.filter = "blur(0px)";
 			canvas.style.transition = "filter 1s";
-			
+
 			TITLE.style.color = "#222"
 			TITLE.style.transition = "color 1s"
 		} else {
@@ -64,8 +64,9 @@ function music_Notes_Generator() {
 			canvas.style.transition = "filter 1s";
 			canvas.style.filter = "blur(15px)";
 
-			speed = 0;
+			return;
 		}
+		/* end of notes */
 	}, 500);
 }
 
@@ -122,7 +123,7 @@ function music_config() {
 	console.log(music);
 	console.log(music.error);
 
-	addEventListener("mousemove", (e) => {
+	addEventListener("click", (e) => {
 		music.play();
 		music.muted = false;
 		music.controls = true;
@@ -136,8 +137,8 @@ function music_config() {
 		music_randomize_Play =
 			music_list[Math.floor(Math.random() * music_list.length)];
 		music.src = `music/${music_randomize_Play}.mp3`;
-		notes = [];
 		effect_circle_array = [];
+		notes_array = [];
 		alert("Music is over");
 	});
 }
@@ -149,236 +150,241 @@ let light_opacity = {
 };
 
 function game() {
-
-	if (document.hasFocus()) {
-		player_focus = true;
-	} else {
-		player_focus = false;
-	}
-	
-	if (!music.paused) {
-		music_title.innerText = music_randomize_Play;
-	} else {
-		music_title.innerText = "music is paused";
-	}
-
-	score_number.innerText = score;
-	miss_number.innerText = miss;
-
-	player.y = canvas.height - 50;
-
-	ctx.beginPath();
-	ctx.fillStyle = `#BEBEBE${background_opacity}`;
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	ctx.closePath();
-
-	effect_circle_array.forEach((circle, index) => {
-		circle.draw();
-
-		if (circle.opacity < -0.05) {
-			setTimeout(() => {
-				effect_circle_array.splice(index, 1);
-			}, 0);
-		}
-	});
-
-	/* health */
-	if (health > 50 && health < 100) {
-		health_color = "green";
-	} else if (health > 20 && health < 50) {
-		health_color = "yellow";
-	} else if (health > 0 && health < 20) {
-		health_color = "red";
-	}
-	ctx.beginPath();
-	ctx.fillStyle = "#FF0000";
-	ctx.fillRect(canvas.width / 2 - health / 2, 0, health, 20);
-	ctx.closePath();
-	/* end of health */
-
-	/* effect circle */
-	// effect_circle_array.forEach((circle) => {
-	//     circle.update();
-	// })
-	/* end of effect circle */
-
-	/* notes */
-	notes.forEach((note) => {
-		note.draw_notes();
-		note.move();
-
-		if (note.y >= canvas.height) {
-			setTimeout(() => {
-				notes.splice(notes.lastIndexOf(note), 1);
-
-				if (health > -0) {
-					health -= 10;
-				}
-
-				miss += 1;
-
-				effect_text_array.push(
-					new text_effect({
-						x: note.x,
-						y: note.y,
-						text: "miss",
-						color: "100, 10, 3",
-						size: 30,
-						speed: 1,
-						opacitySpeed: 0.05,
-					})
-				);
-			}, -50);
+	try {
+		if (document.hasFocus()) {
+			player_focus = true;
+		} else {
+			player_focus = false;
 		}
 
+		if (!music.paused) {
+			music_title.innerText = music_randomize_Play;
+		} else {
+			music_title.innerText = "music is paused";
+		}
+
+		score_number.innerText = score;
+		miss_number.innerText = miss;
+
+		player.y = canvas.height - 50;
+
+		ctx.beginPath();
+		ctx.fillStyle = `#BEBEBE${background_opacity}`;
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.closePath();
+
+		effect_circle_array.forEach((circle, index) => {
+			circle.draw();
+
+			if (circle.opacity < -0.5) {
+				setTimeout(() => {
+					effect_circle_array.splice(index, 1);
+				}, 0);
+			}
+		});
+
+		/* health */
+		if (health > 50 && health < 100) {
+			health_color = "green";
+		} else if (health > 20 && health < 50) {
+			health_color = "yellow";
+		} else if (health > 0 && health < 20) {
+			health_color = "red";
+		}
+		ctx.beginPath();
+		ctx.fillStyle = "#FF0000";
+		ctx.fillRect(canvas.width / 2 - health / 2, 0, health, 20);
+		ctx.closePath();
+		/* end of health */
+
+		/* effect circle */
+		// effect_circle_array.forEach((circle) => {
+		//     circle.update();
+		// })
+		/* end of effect circle */
+
+		/* easter egg */
 		if (
-			note.x + note.width > player.x &&
-			note.x < player.x + player.width &&
-			note.y + note.height > player.y &&
-			note.y < player.y + player.height
+			music_randomize_Play == "kegabutan developernya (maya putri nelpon)" &&
+			!music.paused
 		) {
-			setTimeout(() => {
-				notes.splice(notes.lastIndexOf(note), 1);
-				score += 1;
-				note.color = "red";
-				if (health < 100) {
-					health += 10;
+			ctx.font = "bold 41px sans-serif";
+			ctx.fillStyle = `RGBA(${Math.floor(Math.random() * 255)}, ${Math.floor(
+				Math.random() * 255
+			)}, ${Math.floor(Math.random() * 255)}, ${Math.random()})`;
+			ctx.fillText(
+				"ada telpon nih, wait",
+				canvas.width / 2 - 200,
+				canvas.height / 2
+			);
+		}
+
+		/* effect text */
+		effect_text_array.forEach((text, index) => {
+			text.draw();
+			text.move();
+			text.fade_out();
+			if (text.opacity < 0) {
+				setTimeout(() => {
+					effect_text_array.splice(index, 1);
+				}, 0);
+			}
+		});
+		/* end of effect text */
+
+		/* notes */
+		notes_array.forEach((note, index) => {
+			note.draw_notes();
+			note.move();
+
+			if (player_focus) {
+				if (note.y >= canvas.height) {
+					setTimeout(() => {
+						notes_array.splice(index, 1);
+					}, 0);
+
+						if (health > -0) {
+							health -= 10;
+						}
+
+						miss += 1;
+					effect_text_array.push(
+						new text_effect({
+							x: note.x,
+							y: note.y,
+							text: "miss",
+							color: "100, 10, 3",
+							size: 30,
+							speed: 1,
+							opacitySpeed: 0.05,
+						})
+					);
 				}
 
-				effect_text_array.push(
-					new text_effect({
-						x: note.x,
-						y: note.y,
-						text: "GOOD",
-						color: "0, 255, 0",
-						size: 20,
-						speed: 0.5,
-						opacitySpeed: 0.05,
-					})
-				);
-			}, -50);
-		}
-	});
-	/* end of notes */
+				if (
+					note.x + note.width > player.x &&
+					note.x < player.x + player.width &&
+					note.y + note.height > player.y &&
+					note.y < player.y + player.height
+				) {
+					setTimeout(() => {
+						notes_array.splice(index, 1);
+					}, 0)
 
-	/* easter egg */
-	if (
-		music_randomize_Play == "kegabutan developernya (maya putri nelpon)" &&
-		!music.paused
-	) {
-		ctx.font = "bold 41px sans-serif";
-		ctx.fillStyle = `RGBA(${Math.floor(Math.random() * 255)}, ${Math.floor(
-			Math.random() * 255
-		)}, ${Math.floor(Math.random() * 255)}, ${Math.random()})`;
-		ctx.fillText(
-			"ada telpon nih, wait",
-			canvas.width / 2 - 200,
-			canvas.height / 2
-		);
-	}
+						score += 1;
+						note.color = "red";
+						if (health < 100) {
+							health += 10;
+						}
 
-	/* effect text */
-	effect_text_array.forEach((text, index) => {
-		text.draw();
-		text.move();
-		text.fade_out();
-		if (text.opacity < 0) {
-			setTimeout(() => {
-				effect_text_array.splice(index, 1);
-			}, 0);
-		}
-	});
-	/* end of effect text */
+					effect_text_array.push(
+						new text_effect({
+							x: note.x,
+							y: note.y,
+							text: "GOOD",
+							color: "0, 255, 0",
+							size: 20,
+							speed: 0.5,
+							opacitySpeed: 0.05,
+						})
+					);
+				}
+			}
+		});
+	
+		/* player */
+		ctx.fillStyle = "black";
+		ctx.fillRect(player.x, player.y, player.width, player.height);
 
-	/* player */
-	ctx.fillStyle = "black";
-	ctx.fillRect(player.x, player.y, player.width, player.height);
-
-	if (player.move.left && player.x > 0) {
-		player.x -= player.speed;
-	}
-
-	if (player.move.right && player.x < canvas.width - player.width) {
-		player.x += player.speed;
-	}
-	/* end of player */
-
-	/* duration music */
-	music.addEventListener("timeupdate", () => {
-		let duration = music.duration;
-		let currentTime = music.currentTime;
-		let duration_time = duration - currentTime;
-		let duration_time_minutes = Math.floor(duration_time / 60);
-		let duration_time_seconds = Math.floor(duration_time % 60);
-		duration_time_seconds =
-			duration_time_seconds < 10 ?
-			"0" + duration_time_seconds :
-			duration_time_seconds;
-		duration_time_minutes =
-			duration_time_minutes < 10 ?
-			"0" + duration_time_minutes :
-			duration_time_minutes;
-
-		music_duration_show.innerText = `${duration_time_minutes}:${duration_time_seconds}`;
-		music_duration_adjust = `${duration_time_minutes}:${duration_time_seconds}`;
-
-		ctx.beginPath();
-		ctx.fillStyle = "white";
-		ctx.fillRect(
-			0,
-			canvas.height - 10,
-			(music.currentTime / music.duration) * canvas.width,
-			50
-		);
-		ctx.closePath();
-	});
-	/* end of duration music */
-
-	/* visualizer animation in */
-	if (music.paused) {
-		visualizer_div.style.animation = "none";
-	} else {
-		visualizer_div.style.animation = "visualizer-canvas-in 1s forwards";
-	}
-	/* end of visualizer animation in */
-
-	/* visualizer animation out */
-	music.addEventListener("ended", () => {
-		visualizer_div.style.animation = "visualizer-canvas-out 1s forwards";
-	});
-	/* end of visualizer animation out */
-
-	let lightY_position = canvas.height - 30;
-	/* bottom of screen light */
-	if (!music.paused) {
-		if (light_opacity.layer1 <= 0.5) {
-			light_opacity.layer1++;
+		if (player.move.left && player.x > 0) {
+			player.x -= player.speed;
 		}
 
-		if (light_opacity.layer2 <= 0.3) {
-			light_opacity.layer2++;
+		if (player.move.right && player.x < canvas.width - player.width) {
+			player.x += player.speed;
+		}
+		/* end of player */
+
+		/* duration music */
+		music.addEventListener("timeupdate", () => {
+			let duration = music.duration;
+			let currentTime = music.currentTime;
+			let duration_time = duration - currentTime;
+			let duration_time_minutes = Math.floor(duration_time / 60);
+			let duration_time_seconds = Math.floor(duration_time % 60);
+			duration_time_seconds =
+				duration_time_seconds < 10 ?
+					"0" + duration_time_seconds :
+					duration_time_seconds;
+			duration_time_minutes =
+				duration_time_minutes < 10 ?
+					"0" + duration_time_minutes :
+					duration_time_minutes;
+
+			music_duration_show.innerText = `${duration_time_minutes}:${duration_time_seconds}`;
+			music_duration_adjust = `${duration_time_minutes}:${duration_time_seconds}`;
+
+			ctx.beginPath();
+			ctx.fillStyle = "white";
+			ctx.fillRect(
+				0,
+				canvas.height - 10,
+				(music.currentTime / music.duration) * canvas.width,
+				50
+			);
+			ctx.closePath();
+		});
+		/* end of duration music */
+
+		/* visualizer animation in */
+		if (music.paused) {
+			visualizer_div.style.animation = "none";
+		} else {
+			visualizer_div.style.animation = "visualizer-canvas-in 1s forwards";
+		}
+		/* end of visualizer animation in */
+
+		/* visualizer animation out */
+		music.addEventListener("ended", () => {
+			visualizer_div.style.animation = "visualizer-canvas-out 1s forwards";
+		});
+		/* end of visualizer animation out */
+
+		let lightY_position = canvas.height - 30;
+		/* bottom of screen light */
+		if (!music.paused) {
+			if (light_opacity.layer1 <= 0.5) {
+				light_opacity.layer1++;
+			}
+
+			if (light_opacity.layer2 <= 0.3) {
+				light_opacity.layer2++;
+			}
+
+			if (lightY_position <= canvas.height - 50) {
+				lightY_position += 0.01;
+			}
+
+			/* light */
+			ctx.beginPath();
+			ctx.fillStyle = `rgba(${light_Color}, ${light_opacity.layer1})`;
+			ctx.globalCompositeOperation = "lighter";
+			ctx.fillRect(0, lightY_position, canvas.width, 50);
+			ctx.closePath();
+
+			ctx.beginPath();
+			ctx.fillStyle = `rgba(${light_Color}, ${light_opacity.layer2})`;
+			ctx.globalCompositeOperation = "lighter";
+			ctx.fillRect(0, canvas.height - 30, canvas.width, 10);
+			ctx.closePath();
+			/* end of light */
 		}
 
-		if (lightY_position <= canvas.height - 50) {
-			lightY_position += 0.01;
-		}
 
-		/* light */
-		ctx.beginPath();
-		ctx.fillStyle = `rgba(${light_Color}, ${light_opacity.layer1})`;
-		ctx.globalCompositeOperation = "lighter";
-		ctx.fillRect(0, lightY_position, canvas.width, 50);
-		ctx.closePath();
-
-		ctx.beginPath();
-		ctx.fillStyle = `rgba(${light_Color}, ${light_opacity.layer2})`;
-		ctx.globalCompositeOperation = "lighter";
-		ctx.fillRect(0, canvas.height - 30, canvas.width, 10);
-		ctx.closePath();
-		/* end of light */
+		requestAnimationFrame(game)
+	} catch (e) {
+		console.log(e);
 	}
-	/* end of bottom of screen light */
-	requestAnimationFrame(game);
 }
 
 addEventListener("keydown", (e) => {
