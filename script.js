@@ -552,7 +552,7 @@ bot_button_main.addEventListener("click", () => {
 			bot_button_main.style.borderColor = "#000";
 		}
 	} else {
-		// open a new tab
+		console.log("Invalid operation");
 		window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 	}
 });
