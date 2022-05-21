@@ -13,17 +13,23 @@ let miss_text = document.getElementById("miss");
 let miss_number = document.getElementById("miss-number");
 let music_duration_show = document.getElementById("music-duration");
 let visualizer_div = document.querySelector(".visualizer-canvas");
-
 let TITLE = document.querySelector(" #music_title_adjust > #title");
 let DURATION = document.querySelector("#music_title_adjust > #duration");
-let visualizer_menu_container = document.querySelector(".visualizer-menu-container");
-let visualizer_menu_container_H1 = document.querySelector(".visualizer-menu-container > h1");
-let visualizer_menu_container_button1 = document.querySelector(".visualizer-menu-container > #button-visualizer1");
-let visualizer_menu_container_button2 = document.querySelector(".visualizer-menu-container > #button-visualizer2");
-let visualizer_menu_container_button3 = document.querySelector(".visualizer-menu-container > #button-visualizer3");
-let visualizer_menu_container_button4 = document.querySelector(".visualizer-menu-container > #button-visualizer4");
-let visualizer_menu_container_button5 = document.querySelector(".visualizer-menu-container > #button-visualizer5");
+let visualizer_change = document.querySelector("#visualizer-menu");
+let visualizer_change_h1 = document.querySelector("#visualizer-menu > h1");
+let visualizer_change_button = document.querySelector("#visualizer-menu > #visualizer-menu-button");
+let visualizer_menu_button_next = document.querySelector("#visualizer-menu-button > #next-visualizer");
+let visualizer_menu_button_back = document.querySelector("#visualizer-menu-button > #back-visualizer");
+let visualizer_menu_button_main = document.querySelector("#visualizer-menu-button > button");
 let music_duration_adjust;
+let music_changes_button_container = document.querySelector("#music-changes");
+let music_changes_button_previous = document.querySelector("#music-changes #previous");
+let music_changes_button_playPause = document.querySelector("#music-changes #play-pause");
+let music_changes_button_skip = document.querySelector("#music-changes #skip");
+let music_changes_button = document.querySelector("#music-changes > button");
+let bot_button_div = document.querySelector("#bot-button");
+let bot_button_main = document.querySelector("#bot-button > button");
+
 
 let music = new Audio();
 let audioCtx = new(window.AudioContext || window.webkitAudioContext);
@@ -35,41 +41,15 @@ analyser.fftSize = 2048;
 let bufferLength = analyser.frequencyBinCount;
 let dataArray = new Uint8Array(bufferLength);
 
+let bot = false;
+
 setTimeout(() => {
-	visualizer_menu_container.style.display = "flex";
-	visualizer_menu_container.style.animation = "fadeIn 0.5s forwards";
-}, 1000)
-
-let visualizer_menu = [
-	{
-		name: "visualizer1",
-		visualizer1: true
-	}, 
-	
-	{
-		name: "visualizer2",
-		visualizer2: false,
-	}, 
-	
-	{
-		name: "visualizer3",
-		visualizer3: false,
-	},
-	
-	{
-		name: "visualizer4",
-		visualizer4: false,
-	}, 
-	
-	{
-		name: "visualizer5",
-		visualizer5: false,
-	}, 
-	
-]
-
+	visualizer_change.style.animation = "width-open 1s ease-in forwards";
+	visualizer_change.style.display = "flex";
+}, 1000);
 
 let music_list = [
+	"kegabutan developernya (maya putri nelpon)",
 	"SAYKOJI - JALAN PANJANG ft GUNTUR SIMBOLON",
 	"Atmosfera  Tak Tau Malu",
 	"Gen Hoshino comedy",
@@ -112,7 +92,6 @@ let music_list = [
 	"Super Idol Bahasa Malaysia Cover feat Liliana Vampaia",
 	"Sukima Switch  Zenryoku Shounen",
 	"Sofia - Clairo",
-	"kegabutan developernya (maya putri nelpon)",
 	"RADWIMPS  Ai ni Dekiru Koto wa Mada Aru Kai Cover maya putri",
 	"Nanairo -  Symphony",
 	"Maya Putri - Nada Nada Cinta",
@@ -126,6 +105,11 @@ let music_list = [
 	"SAYKOJI  SUKSES FT GAMAL GANDHI",
 	"SAYKOJI - TRUE COLORS",
 	"LAGU UNTUK KALIAN  Animal Crossing  Bubblegum KK Parody",
+	"YUME NO YOU NA DR STONE ENDING 2  YUSUKE SAEKI ROMAJII",
+	"No Internet song",
+	"Nico Nico Pirates  Yume ni Katachi wa Nai Keredo",
+	"Florida Man Song",
+	"FBI Open Up  Song"
 ];
 
 let music_randomize_Play = music_list[Math.floor(Math.random() * music_list.length)];

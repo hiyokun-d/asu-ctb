@@ -14,15 +14,26 @@ function screen_adjusment() {
     let style_music_canvas = music_canvas.style
     let style_music_canvasP = music_canvasP.style
 
+    if (music.paused) {
+        music_canvas.addEventListener("click", (e) => {
+            music.play();
+            music.muted = false;
+            music.controls = true;
+            music.autoplay = true;
+            audioCtx.resume();
+        });
+    }
+
     if (window.innerWidth < 1440) {
         canvas.width = 700
         in_game_menu_style.animation = "width_change 1s forwards"
 
         miss_adjust.innerText = miss
         score_adjust.innerText = score
-        
         DURATION.innerText = `${music_duration_adjust}`
         TITLE.innerText = `${music_randomize_Play}`
+
+
         if (!music.paused) {
             style_music_canvasP.animation = "fade_out 1s forwards"
 
@@ -39,19 +50,23 @@ function screen_adjusment() {
                     style_music_canvas.display = "none"
                 }, 700)
             }, 1500);
-            
             setTimeout(() => {
                 TITLE.style.animation = "fade-out 0.5s linear forwards"
             }, 60000);
         } else {
-
-            music_config_adjust.style.display = "none"
-            style_music_canvas.display = "flex"
-            style_music_canvas.animation = "open_up 1s forwards"
+            music_config_adjust.style.display = "none";
+            style_music_canvas.display = "flex";
+            style_music_canvas.animation = "open_up 1s forwards";
+            setTimeout(() => {
+                style_music_canvasP.display = "block";
+                style_music_canvasP.animation = "fade_in 1s forwards";
+            }, 2000)
         }
     } else {
         canvas.width = 700
         canvas.height = 800
+
+
         music_config_adjust.style.display = "none"
         in_game_menu_style.animation = "width_change_back 1s forwards"
 
@@ -62,31 +77,26 @@ function screen_adjusment() {
                 style_music_canvas.animation = "close_up 0.5s forwards";
 
                 setTimeout(() => {
-                    if (
-                        music_randomize_Play !==
-                        "kegabutan developernya (maya putri nelpon)"
-                    ) {
-                        music_config_adjust.style.display = "flex";
-                        TITLE.style.fontSize = "30px";
-                        music_config_adjust.style.animation =
-                            "fade-in-music-config-adjust 0.5s forwards";
-                    }
-
                     style_music_canvas.display = "none";
                 }, 700);
             }, 1500);
         } else {
-            music_config_adjust.style.display = "none";
             style_music_canvas.display = "flex";
             style_music_canvas.animation = "open_up 1s forwards";
+            setTimeout(() => {
+                style_music_canvasP.display = "block";
+                style_music_canvasP.animation = "fade_in 3s infinite ease-in-out";
+            }, 1500)
         }
     }
 }
 
 
-
-screen_adjusment();
-music_config();
-music_Notes_Generator();
-game();
-effect_circle_Generator();
+window.addEventListener("load", () => {
+    visualizer()
+    screen_adjusment();
+    music_config();
+    music_Notes_Generator();
+    game();
+    effect_circle_Generator();
+})

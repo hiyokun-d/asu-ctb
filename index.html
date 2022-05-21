@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="style/in-game-menu.css">
     <link rel="stylesheet" href="style/music_canvas.css">
     <link rel="stylesheet" href="style/visualizer-menu.css">
+    <link rel="stylesheet" href="style/music-changes-button.css">
+    <link rel="stylesheet" href="style/bot-button.css">
 </head>
 
 <body>
@@ -20,17 +22,23 @@
             <p id="music">
                 <span id="music-title">Music: nothings</span>
                 <br<br><br><br>
-                <span id="music-duration">
-                    move&click your mouse
-                </span>
+                    <span id="music-duration">
+                        click canvas to play
+                    </span>
             </p>
         </div>
-        
+
+        <div id="music-changes">
+            <button id="previous" title="previous - nothings">⇚</button>
+            <button id="play-pause" title="play/pause">▶</button>
+            <button id="skip" title="skip - nothings">⇛</button>
+        </div>
+
         <div id="score-container">
             <p id="score">score: <span id="score-number">0</span></p>
             <p id="miss">miss: <span id="miss-number">0</span></p>
         </div>
-        
+
         <div class="visualizer">
             <canvas class="visualizer-canvas">
                 <p>
@@ -39,32 +47,21 @@
             </canvas>
         </div>
 
-
-        <div class="visualizer-menu-container">
-            <h1>VISUALIZER SELECT</h1>
-            <button class="visualizer-menu" title="visualizer is not found" id="button-visualizer1">
-                example
-            </button>
-
-            <button class="visualizer-menu" title="visualizer is not found" id="button-visualizer2">
-                example
-            </button>
-
-            <button class="visualizer-menu" title="visualizer is not found" id="button-visualizer3">
-                example
-            </button>
-
-            <button class="visualizer-menu" title="visualizer is not found" id="button-visualizer4">
-                example
-            </button>
-
-            <button class="visualizer-menu" title="visualizer is not found" id="button-visualizer5">
-                example
-            </button>
+        <div id="visualizer-menu">
+            <h1>VISUALIZER MENU</h1>
+            <div id="visualizer-menu-button">
+                <button id="back-visualizer" title="back">⇐</button>
+                <button id="next-visualizer" title="next">⇒</button>
+            </div>
         </div>
+
+        <div id="bot-button">
+            <button id="bot-button-text">HIYO</button>
+        </div>
+
     </div>
-    
-    
+
+
     <noscript>
         <p id="no-script">
             <span>
@@ -72,14 +69,14 @@
             </span>
         </p>
     </noscript>
-    
+
     <div id="music_canvas">
         <p>
             CLICK&MOVE ON THIS CANVAS
         </p>
     </div>
 
-    
+
     <div id="music_config_adjust">
         <div id="music_title_adjust">
             <h1 id="title">no music</h1>
@@ -90,7 +87,7 @@
             <span id="score_adjust">0 |</span>
             <span id="miss_adjust">| 0</span>
         </div>
-        
+
         <div class="visualizer">
             <canvas class="visualizer-canvas">
                 <p>
@@ -100,7 +97,7 @@
         </div>
     </div>
     <canvas id="canvas"> your browser is not support canvas features from html5 pls update your browser </canvas>
-    
+
     <script src="beatDetector.js"></script>
     <script src="script.js"></script>
     <script src="visualizer.js"></script>

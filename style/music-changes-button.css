@@ -1,0 +1,58 @@
+#music-changes {
+    border: 3px solid rgb(200, 250, 188);
+    position: absolute;
+    transform: translateY(-20%);
+    width: 350px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s;
+    overflow: hidden;
+    animation: fadeIn 2s forwards;
+
+}
+
+#music-changes button {
+    width: 40%;
+    height: 100%;
+    font-size: 20px;
+    transition: background-color 0.5s, font-size 1s, border-radius 1s;
+    background-color: #5a8448d0;
+}
+
+#music-changes button:hover {
+    border-radius: 10px;
+    background-color: rgb(158, 251, 140);
+    font-size: 30px;
+}
+
+#music-changes:hover {
+    border-radius: 10px;
+}
+
+#music-changes button:active {
+    border-radius: 10px;
+    background-color: rgb(209, 250, 204);
+    font-size: 30px;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

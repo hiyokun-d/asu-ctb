@@ -1,0 +1,24 @@
+#bot-button {
+    position: absolute;
+    transform: translateY(-35%);
+    width: 350px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 1s;
+    overflow: hidden;
+    animation: fadeIn 2s forwards;
+}
+
+#bot-button button {
+    text-align: center;
+    width: 20%;
+    height: 50%;
+    font-size: 20px;
+    transition: background-color 0.5s, font-size 1s, border-radius 1s, color 0.5s ease-in-out;
+}
+
+#bot-button button:active {
+    color: #f2f2f2d0;
+}

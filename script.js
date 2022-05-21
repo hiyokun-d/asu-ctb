@@ -10,11 +10,15 @@ let player_focus = false;
 
 function music_Notes_Generator() {
 	setInterval(() => {
-		let x = Math.floor(Math.random() * canvas.width - 50);
+		// if note X position is out of canvas
+		let x = Math.floor(Math.random() * canvas.width);
+		if (x > canvas.width - 50) {
+			x = canvas.width - 50;
+		}
 
 		let music_notes_symbol = "♩♪♫♬♩♪♫♬♭♮♮♩♪♪";
 
-		//make the speed is follow the beat
+		//make the speed is follow the getBeat(dataArray)
 		let notes_limit = 10;
 		if (
 			music.paused ||
@@ -29,10 +33,7 @@ function music_Notes_Generator() {
 
 		if (player_focus) {
 			speed = 5;
-
-			console.log(speed)
-
-			//detect beat of music and generate notes
+			//detect getBeat(dataArray) of music and generate notes
 			if (getBeat(dataArray)) {
 				let notes_symbol =
 					music_notes_symbol[
@@ -123,13 +124,23 @@ function music_config() {
 	console.log(music);
 	console.log(music.error);
 
-	addEventListener("click", (e) => {
+	canvas.addEventListener("click", (e) => {
 		music.play();
 		music.muted = false;
 		music.controls = true;
 		music.autoplay = true;
 		audioCtx.resume();
+		music_changes_button_playPause.innerText = "||";
 	});
+
+	addEventListener("keypress", (e) => {
+		// if we click spacebar
+		if (e.keyCode == 32 && !music.paused) {
+			music.paused = true
+		} else if (e.keyCode == 32 && music.paused) {
+			music.paused = false
+		}
+	})
 
 	music.addEventListener("ended", () => {
 		music.muted = true;
@@ -139,8 +150,70 @@ function music_config() {
 		music.src = `music/${music_randomize_Play}.mp3`;
 		effect_circle_array = [];
 		notes_array = [];
-		alert("Music is over");
+		miss = 0;
+		score = 0;
+		if (player_focus) {
+			alert("Music is over")
+		} else {
+			music.muted = false;
+		}
 	});
+
+	music_changes_button_playPause.addEventListener("click", () => {
+		if (music.paused) {
+			music.play();
+			music.muted = false;
+			music.controls = true;
+			music.autoplay = true;
+			audioCtx.resume();
+			music_changes_button_playPause.innerText = "||";
+			music_changes_button_playPause.title = "Play"
+		} else {
+			music.pause();
+			music.muted = true;
+			music.controls = false;
+			music.autoplay = false;
+			audioCtx.resume();
+			effect_circle_array = [];
+			effect_text_array = [];
+			notes_array = [];
+			music_changes_button_playPause.innerText = "▶";
+			music_changes_button_playPause.title = "Pause"
+		}
+	});
+	let music_order = 0;
+
+	music_changes_button_skip.addEventListener("click", () => {
+		music_order++;
+		if (music_order >= music_list.length || music_randomize_Play == "kegabutan developernya (maya putri nelpon)") {
+			music_order = 1;
+		}
+
+		effect_circle_array = [];
+		effect_text_array = [];
+		notes_array = [];
+
+		music_randomize_Play = music_list[music_order];
+		music.src = `music/${music_randomize_Play}.mp3`;
+		miss = 0;
+		score = 0;
+	})
+
+	music_changes_button_previous.addEventListener("click", () => {
+		music_order--;
+		if (music_order <= 0 || music_randomize_Play == "kegabutan developernya (maya putri nelpon)") {
+			music_order = music_list.length - 1;
+		}
+
+		effect_circle_array = [];
+		effect_text_array = [];
+		notes_array = [];
+
+		music_randomize_Play = music_list[music_order];
+		music.src = `music/${music_randomize_Play}.mp3`;
+		miss = 0;
+		score = 0;
+	})
 }
 
 let light_Color = "178,34,34";
@@ -159,8 +232,29 @@ function game() {
 
 		if (!music.paused) {
 			music_title.innerText = music_randomize_Play;
+			music_changes_button_container.style = `
+				transform: translateY(0px);
+				`
+			
+			visualizer_change.style.transform = `translateY(230px)`;
+			visualizer_change_h1.innerText = "VISUALIZER MENU"
+			visualizer_menu_button_next.style.display = "block"
+			visualizer_menu_button_next.style.animation = "slide-in 3s ease-in-out forward"
+			visualizer_menu_button_back.style.display = "block"
+			visualizer_menu_button_back.style.animation = "slide-in 3s ease-in-out forward"
+
+			bot_button_div.style.transform = `translateY(130px)`;
+			
 		} else {
-			music_title.innerText = "music is paused";
+			bot_button_div.style.transform = `translateY(-35%)`;
+			visualizer_menu_button_next.style.display = "none"
+			visualizer_menu_button_back.style.display = "none"
+			visualizer_change.style.transform = `translateY(100px)`;
+			visualizer_change_h1.innerText = "PLAY MUSIC FIRST"
+			music_changes_button_container.style = `
+			transform: translateY(30px);
+			`
+			music_title.innerText = "music is muted";
 		}
 
 		score_number.innerText = score;
@@ -176,11 +270,13 @@ function game() {
 		effect_circle_array.forEach((circle, index) => {
 			circle.draw();
 
-			if (circle.opacity < -0.5) {
-				setTimeout(() => {
-					effect_circle_array.splice(index, 1);
-				}, 0);
-			}
+			setTimeout(() => {
+				if (index === 0) {
+					if (circle.opacity < -0.5) {
+						effect_circle_array.splice(index, 1)
+					}
+				}
+			}, 0);
 		});
 
 		/* health */
@@ -196,13 +292,6 @@ function game() {
 		ctx.fillRect(canvas.width / 2 - health / 2, 0, health, 20);
 		ctx.closePath();
 		/* end of health */
-
-		/* effect circle */
-		// effect_circle_array.forEach((circle) => {
-		//     circle.update();
-		// })
-		/* end of effect circle */
-
 		/* easter egg */
 		if (
 			music_randomize_Play == "kegabutan developernya (maya putri nelpon)" &&
@@ -224,11 +313,13 @@ function game() {
 			text.draw();
 			text.move();
 			text.fade_out();
-			if (text.opacity < 0) {
-				setTimeout(() => {
-					effect_text_array.splice(index, 1);
-				}, 0);
-			}
+			setTimeout(() => {
+				if (index === 0) {
+					if (text.opacity < 0) {
+						effect_text_array.splice(index, 1)
+					}
+				}
+			}, 0);
 		});
 		/* end of effect text */
 
@@ -238,70 +329,88 @@ function game() {
 			note.move();
 
 			if (player_focus) {
-				if (note.y >= canvas.height) {
-					setTimeout(() => {
+				setTimeout(() => {
+					if (note.y >= canvas.height) {
 						notes_array.splice(index, 1);
-					}, 0);
 
 						if (health > -0) {
 							health -= 10;
 						}
 
 						miss += 1;
-					effect_text_array.push(
-						new text_effect({
-							x: note.x,
-							y: note.y,
-							text: "miss",
-							color: "100, 10, 3",
-							size: 30,
-							speed: 1,
-							opacitySpeed: 0.05,
-						})
-					);
-				}
+						effect_text_array.push(
+							new text_effect({
+								x: note.x,
+								y: note.y,
+								text: "miss",
+								color: "100, 10, 3",
+								size: 30,
+								speed: 1,
+								opacitySpeed: 0.05,
+							})
+						);
+					}
 
-				if (
-					note.x + note.width > player.x &&
-					note.x < player.x + player.width &&
-					note.y + note.height > player.y &&
-					note.y < player.y + player.height
-				) {
-					setTimeout(() => {
-						notes_array.splice(index, 1);
-					}, 0)
-
+					if (
+						note.x + note.width > player.x &&
+						note.x < player.x + player.width &&
+						note.y + note.height > player.y &&
+						note.y < player.y + player.height
+					) {
+						notes_array.shift();
 						score += 1;
 						note.color = "red";
 						if (health < 100) {
 							health += 10;
 						}
-
-					effect_text_array.push(
-						new text_effect({
-							x: note.x,
-							y: note.y,
-							text: "GOOD",
-							color: "0, 255, 0",
-							size: 20,
-							speed: 0.5,
-							opacitySpeed: 0.05,
-						})
-					);
-				}
+						effect_text_array.push(
+							new text_effect({
+								x: note.x,
+								y: note.y,
+								text: "GOOD",
+								color: "0, 255, 0",
+								size: 20,
+								speed: 0.5,
+								opacitySpeed: 0.05,
+							})
+						);
+					}
+				}, 0)
 			}
 		});
-	
+		/* end of notes */
+
 		/* player */
 		ctx.fillStyle = "black";
 		ctx.fillRect(player.x, player.y, player.width, player.height);
 
-		if (player.move.left && player.x > 0) {
-			player.x -= player.speed;
-		}
+		if (!bot) {
+			if (player.move.left && player.x > 0) {
+				player.x -= player.speed;
+			}
 
-		if (player.move.right && player.x < canvas.width - player.width) {
-			player.x += player.speed;
+			if (player.move.right && player.x < canvas.width - player.width) {
+				player.x += player.speed;
+			}
+		} else {
+			notes_array.forEach((note, index) => {
+				// follow the firs note in the array
+				if (index == 0) {
+					if (player.x < note.x) {
+						player.x += player.speed;
+					} else if (player.x > note.x) {
+						player.x -= player.speed;
+					}
+				}
+
+				if (player.x < 0) {
+					player.x = 0;
+				}
+
+				if (player.x > canvas.width - player.width) {
+					player.x = canvas.width - player.width;
+				}
+			})
 		}
 		/* end of player */
 
@@ -314,15 +423,17 @@ function game() {
 			let duration_time_seconds = Math.floor(duration_time % 60);
 			duration_time_seconds =
 				duration_time_seconds < 10 ?
-					"0" + duration_time_seconds :
-					duration_time_seconds;
+				"0" + duration_time_seconds :
+				duration_time_seconds;
 			duration_time_minutes =
 				duration_time_minutes < 10 ?
-					"0" + duration_time_minutes :
-					duration_time_minutes;
+				"0" + duration_time_minutes :
+				duration_time_minutes;
 
-			music_duration_show.innerText = `${duration_time_minutes}:${duration_time_seconds}`;
-			music_duration_adjust = `${duration_time_minutes}:${duration_time_seconds}`;
+			if (!music.paused) {
+				music_duration_show.innerText = `${duration_time_minutes}:${duration_time_seconds}`;
+				music_duration_adjust = `${duration_time_minutes}:${duration_time_seconds}`;
+			}
 
 			ctx.beginPath();
 			ctx.fillStyle = "white";
@@ -379,12 +490,10 @@ function game() {
 			ctx.closePath();
 			/* end of light */
 		}
-
-
-		requestAnimationFrame(game)
 	} catch (e) {
 		console.log(e);
 	}
+	requestAnimationFrame(game);
 }
 
 addEventListener("keydown", (e) => {
@@ -421,6 +530,20 @@ canvas.addEventListener("mouseout", (e) => {
 canvas.addEventListener("mousemove", (e) => {
 	if (mouseIsClick) {
 		player.x = e.clientX - player.width / 2 - canvas.offsetLeft;
+	}
+});
+
+bot_button_main.addEventListener("click", () => {
+	if (!bot) {
+		bot = true;
+		bot_button_main.style.backgroundColor = "#ff0000";
+		bot_button_main.style.color = "#fff";
+		bot_button_main.style.borderColor = "#fff";
+	} else {
+		bot = false;
+		bot_button_main.style.backgroundColor = "#fff";
+		bot_button_main.style.color = "#000";
+		bot_button_main.style.borderColor = "#000";
 	}
 });
 

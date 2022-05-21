@@ -1,52 +1,110 @@
-.visualizer-menu-container {
+#visualizer-menu {
+    border: 1px solid #ccc;
+    width: 0%;
     display: none;
     flex-direction: column;
-
-    width: 100%;
-    border: 5px solid black;
-    border-radius: 30px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(87, 110, 118, 0.53);
     overflow: hidden;
     position: absolute;
-    transform: translateY(245px);
+    transition: border-radius 0.5s linear, transform 1s ease-in-out, height 0.5s linear;
+    border-radius: 10px;
+    transform: translateY(100px);
 }
 
-.visualizer-menu-container button {
-    background-color: rgb(57, 57, 57) ;
-    text-align: center;
-    text-decoration: dashed;
-    color: rgb(135, 135, 135);
-    font-weight: bold;
-    font-family: 'Roboto', sans-serif;
+@keyframes width-close {
+    0% {
+        width: 90%;
+    }
+    
+    100% {
+        width: 0;
+        display: none;
+    }
 }
 
-.visualizer-menu-container button:active {
-    background-color: rgb(200, 200, 200);
-    color: rgb(69, 69, 69);
-}
-
-.visualizer-menu-container h1 {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    color: rgb(220, 220, 220);
-    margin: 0;
-    padding: 0;
-}
-
-@keyframes fadeIn {
+@keyframes width-open {
     0% {
         opacity: 0;
+        width: 0;
     }
-    100% {
+
+    20%,35%,50% {
+        opacity: 0.3;
+        width: 15%;
+    }
+
+    10%,25%,60% {
         opacity: 1;
+        width: 35%;
+    }
+
+    65%,70%,100% {
+        opacity: 1;
+        width: 90%;
     }
 }
 
-@keyframes slideIn {
+#visualizer-menu:hover {
+    border-radius: 3px
+}
+
+#visualizer-menu h1 {
+    font-size: 25px;
+}
+
+#visualizer-menu #visualizer-menu-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+
+    transition: background-color 0.5s ease, border-radius 1s linear;
+}
+
+#visualizer-menu #visualizer-menu-button button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 50px;
+    font-weight: bold;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+
+    transition: color 0.5s linear, background-color 1s ease-in-out;
+    display: none
+}
+
+@keyframes slide-in {
     0% {
-        transform: translateX(-250px);
+        transform: translateY(100%);
     }
+
     100% {
-        transform: translateX(0px);
+        transform: translateY(0);
     }
+    
+}
+
+#visualizer-menu:hover #visualizer-menu-button {
+    background-color: rgba(68, 106, 118, 0.79);
+    border-radius: 5px;
+}
+
+#visualizer-menu #visualizer-menu-button:hover button {
+    color: rgb(199, 249, 205);
+}
+
+#visualizer-menu #visualizer-menu-button button:hover {
+    color: rgb(184, 246, 191);
+    background-color: rgba(211, 243, 253, 0.576);
+}
+
+#visualizer-menu #visualizer-menu-button button:active{
+    color: rgba(100, 251, 118, 0.155);
+    background-color: rgba(147, 230, 255, 0.089);
+    transition: none;
 }
