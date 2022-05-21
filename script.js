@@ -539,16 +539,21 @@ canvas.addEventListener("mousemove", (e) => {
 });
 
 bot_button_main.addEventListener("click", () => {
-	if (!bot) {
-		bot = true;
-		bot_button_main.style.backgroundColor = "#ff0000";
-		bot_button_main.style.color = "#fff";
-		bot_button_main.style.borderColor = "#fff";
+	if (!music.paused) {
+		if (!bot) {
+			bot = true;
+			bot_button_main.style.backgroundColor = "#ff0000";
+			bot_button_main.style.color = "#fff";
+			bot_button_main.style.borderColor = "#fff";
+		} else {
+			bot = false;
+			bot_button_main.style.backgroundColor = "#fff";
+			bot_button_main.style.color = "#000";
+			bot_button_main.style.borderColor = "#000";
+		}
 	} else {
-		bot = false;
-		bot_button_main.style.backgroundColor = "#fff";
-		bot_button_main.style.color = "#000";
-		bot_button_main.style.borderColor = "#000";
+		// open a new tab
+		window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 	}
 });
 
