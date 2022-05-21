@@ -124,14 +124,17 @@ function music_config() {
 	console.log(music);
 	console.log(music.error);
 
-	canvas.addEventListener("click", (e) => {
-		music.play();
-		music.muted = false;
-		music.controls = true;
-		music.autoplay = true;
-		audioCtx.resume();
-		music_changes_button_playPause.innerText = "||";
-	});
+	setTimeout(() => {
+
+		canvas.addEventListener("click", (e) => {
+			music.play();
+			music.muted = false;
+			music.controls = true;
+			music.autoplay = true;
+			audioCtx.resume();
+			music_changes_button_playPause.innerText = "||";
+		});
+	}, 1000)
 
 	addEventListener("keypress", (e) => {
 		// if we click spacebar
@@ -153,7 +156,10 @@ function music_config() {
 		miss = 0;
 		score = 0;
 		if (player_focus) {
-			alert("Music is over")
+			setTimeout(function () {
+
+				alert("Music is over")
+			}, 5500)
 		} else {
 			music.muted = false;
 		}
@@ -179,6 +185,7 @@ function music_config() {
 			notes_array = [];
 			music_changes_button_playPause.innerText = "▶";
 			music_changes_button_playPause.title = "Pause"
+			visualizer_div.style.animation = "visualizer-canvas-out 1s forwards";
 		}
 	});
 	let music_order = 0;
@@ -448,9 +455,7 @@ function game() {
 		/* end of duration music */
 
 		/* visualizer animation in */
-		if (music.paused) {
-			visualizer_div.style.animation = "none";
-		} else {
+		if (!music.paused) {
 			visualizer_div.style.animation = "visualizer-canvas-in 1s forwards";
 		}
 		/* end of visualizer animation in */
