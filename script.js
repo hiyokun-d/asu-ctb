@@ -225,8 +225,8 @@ function music_config() {
 
 	volume_controller.addEventListener("input", () => {
 		music.volume = volume_controller.value;
-
 		volume_controller_text.innerText = `${Math.floor(music.volume * 100)}%`;
+
 
 		if (music.volume <= 0) {
 			volume_controller_text.innerText = "Mute";
