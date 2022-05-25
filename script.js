@@ -88,8 +88,8 @@ function effect_circle_Generator() {
 					new effect_circle({
 						x,
 						y,
-						opacitySpeed: 0.01,
-						radiusSpeed: 0.5,
+						opacitySpeed: 0.03,
+						radiusSpeed: 1,
 						color: `${Math.floor(Math.random() * 255)}, ${Math.floor(
 							Math.random() * 255
 						)}, ${Math.floor(Math.random() * 255)}`,
@@ -97,7 +97,7 @@ function effect_circle_Generator() {
 				);
 			}
 		}
-	}, 500);
+	}, 200);
 }
 
 let player = {
@@ -118,6 +118,8 @@ let player = {
 let health = 100;
 let background_opacity = 40;
 
+let music_order = Math.floor(Math.random() * music_list.length);
+let music_randomize_Play = music_list[music_order];
 function music_config() {
 	music.src = `music/${music_randomize_Play}.mp3`;
 
@@ -188,7 +190,6 @@ function music_config() {
 			visualizer_div.style.animation = "visualizer-canvas-out 1s forwards";
 		}
 	});
-	let music_order = 0;
 
 	music_changes_button_skip.addEventListener("click", () => {
 		music_order++;
@@ -221,6 +222,16 @@ function music_config() {
 		miss = 0;
 		score = 0;
 	})
+
+	volume_controller.addEventListener("input", () => {
+		music.volume = volume_controller.value;
+
+		volume_controller_text.innerText = `${Math.floor(music.volume * 100)}%`;
+
+		if (music.volume <= 0) {
+			volume_controller_text.innerText = "Mute";
+		}
+	})
 }
 
 let light_Color = "178,34,34";
@@ -242,7 +253,7 @@ function game() {
 			music_changes_button_container.style = `
 				transform: translateY(0px);
 				`
-			
+
 			visualizer_change.style.transform = `translateY(230px)`;
 			visualizer_change_h1.innerText = "VISUALIZER MENU"
 			visualizer_menu_button_next.style.display = "block"
@@ -251,8 +262,11 @@ function game() {
 			visualizer_menu_button_back.style.animation = "slide-in 3s ease-in-out forward"
 
 			bot_button_div.style.transform = `translateY(130px)`;
+
 			
+			volume_controller_container.style.transform = `translateY(65px)`;
 		} else {
+			volume_controller_container.style.transform = `translateY(165px)`;
 			bot_button_div.style.transform = `translateY(-35%)`;
 			visualizer_menu_button_next.style.display = "none"
 			visualizer_menu_button_back.style.display = "none"
@@ -299,6 +313,7 @@ function game() {
 		ctx.fillRect(canvas.width / 2 - health / 2, 0, health, 20);
 		ctx.closePath();
 		/* end of health */
+
 		/* easter egg */
 		if (
 			music_randomize_Play == "kegabutan developernya (maya putri nelpon)" &&

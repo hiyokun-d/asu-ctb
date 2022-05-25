@@ -21,6 +21,10 @@ let visualizer_change_button = document.querySelector("#visualizer-menu > #visua
 let visualizer_menu_button_next = document.querySelector("#visualizer-menu-button > #next-visualizer");
 let visualizer_menu_button_back = document.querySelector("#visualizer-menu-button > #back-visualizer");
 let visualizer_menu_button_main = document.querySelector("#visualizer-menu-button > button");
+let volume_controller_container = document.getElementById("volume-container");
+let volume_controller = document.querySelector("#volume-container > input[type=range]");
+let volume_controller_text = document.querySelector("#volume-symbols > #volume-value");
+let volume_controller_symbols = document.querySelector("#volume-container > #volume-symbol");
 let music_duration_adjust;
 let music_changes_button_container = document.querySelector("#music-changes");
 let music_changes_button_previous = document.querySelector("#music-changes #previous");
@@ -109,10 +113,15 @@ let music_list = [
     "No Internet song",
     "Nico Nico Pirates  Yume ni Katachi wa Nai Keredo",
     "Florida Man Song",
-    "FBI Open Up  Song"
+    "FBI Open Up  Song",
+    "Nandemonaiya - Mone Kamishiraishi Mitsuha",
+    "Rainych Zankyou Sanka cover",
+    "Rainych ft A V I A N D Homura - LiSA",
+    "muse ID - PROJEKT GENESIS Janji",
+    "akeboshi - lisa",
+    "Gurenge - Demon Slayer Opening  Band Cover",
+    "Nathan Evans - Wellerman Sea Of Thieves",
 ];
-
-let music_randomize_Play = music_list[Math.floor(Math.random() * music_list.length)];
 
 function getRMS(array) {
     let rms = 0;

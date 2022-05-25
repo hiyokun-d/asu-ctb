@@ -9,9 +9,11 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+
 }
 
 #canvas {
+    cursor: grabbing;
     border: 1px solid black;
     border-radius: 50px;
 }
