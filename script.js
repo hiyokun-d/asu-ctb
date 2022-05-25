@@ -101,10 +101,10 @@ function effect_circle_Generator() {
 }
 
 let player = {
-	x: canvas.width / 2,
+	x: canvas.width / 2 - 50,
 	y: canvas.height - 50,
-	width: 20,
-	height: 20,
+	width: 105,
+	height: 10,
 	color: "#00FF00",
 	speed: 13,
 	move: {
