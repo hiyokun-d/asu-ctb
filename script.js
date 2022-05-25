@@ -12,8 +12,12 @@ function music_Notes_Generator() {
 	setInterval(() => {
 		// if note X position is out of canvas
 		let x = Math.floor(Math.random() * canvas.width);
-		if (x > canvas.width - 50) {
-			x = canvas.width - 50;
+		if (x >= canvas.width - 20) {
+			x = canvas.width - 20;
+		}
+
+		if (x <= 0) {
+			x = 0;
 		}
 
 		let music_notes_symbol = "♩♪♫♬♩♪♫♬♭♮♮♩♪♪";
@@ -102,11 +106,12 @@ function effect_circle_Generator() {
 
 let player = {
 	x: canvas.width / 2 - 50,
-	y: canvas.height - 50,
-	width: 105,
+	y: canvas.height - 100,
+	width: 50,
 	height: 10,
 	color: "#00FF00",
 	speed: 13,
+	dashed_speed: 15.5,
 	move: {
 		left: false,
 		right: false,
@@ -120,6 +125,7 @@ let background_opacity = 40;
 
 let music_order = Math.floor(Math.random() * music_list.length);
 let music_randomize_Play = music_list[music_order];
+
 function music_config() {
 	music.src = `music/${music_randomize_Play}.mp3`;
 
@@ -263,7 +269,7 @@ function game() {
 
 			bot_button_div.style.transform = `translateY(130px)`;
 
-			
+
 			volume_controller_container.style.transform = `translateY(65px)`;
 		} else {
 			volume_controller_container.style.transform = `translateY(165px)`;
@@ -403,7 +409,7 @@ function game() {
 		/* end of notes */
 
 		/* player */
-		ctx.fillStyle = "black";
+		ctx.fillStyle = player.color;
 		ctx.fillRect(player.x, player.y, player.width, player.height);
 
 		if (!bot) {
@@ -518,18 +524,40 @@ function game() {
 
 addEventListener("keydown", (e) => {
 	if (e.keyCode == 65 || e.keyCode == 37 || e.keyCode == 70) {
+		if (e.shiftKey) {
+			player.speed = player.dashed_speed;
+			player.color = "red"
+		} else {
+			player.color = "black";
+			player.speed = 13;
+		}
 		player.move.left = true;
 	}
 	if (e.keyCode == 68 || e.keyCode == 39 || e.keyCode == 74) {
+		if (e.shiftKey) {
+			player.speed = player.dashed_speed;
+			player.color = "red"
+		} else {
+			player.color = "black";
+			player.speed = 13;
+		}
 		player.move.right = true;
 	}
 });
 
 addEventListener("keyup", (e) => {
 	if (e.keyCode == 65 || e.keyCode == 37 || e.keyCode == 70) {
+		if (e.shiftKey) {
+			player.speed = 13;
+			player.color = "black";
+		}
 		player.move.left = false;
 	}
 	if (e.keyCode == 68 || e.keyCode == 39 || e.keyCode == 74) {
+		if (e.shiftKey) {
+			player.speed = 13;
+			player.color = "black";
+		}
 		player.move.right = false;
 	}
 });
@@ -550,6 +578,12 @@ canvas.addEventListener("mouseout", (e) => {
 canvas.addEventListener("mousemove", (e) => {
 	if (mouseIsClick) {
 		player.x = e.clientX - player.width / 2 - canvas.offsetLeft;
+
+		if (player.x < 0) {
+			player.x = 0;
+		} else if (player.x > canvas.width - player.width) {
+			player.x = canvas.width - player.width;
+		}
 	}
 });
 

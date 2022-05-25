@@ -79,7 +79,7 @@ let music_list = [
     "Lagu Tentang Cicak di dinding Parody Cover",
     "JJD  Vertigo Feat Cecilia Gault",
     "Heat Waves Glass animals x HighCloud Cover",
-    "enau Negara Lucu Official Video Lyric",
+    "enau Negara Lucu",
     "Elley Duhe MIDDLE OF THE NIGHT",
     "Alan Walker vs Coldplay Hymn For The Weekend Remix",
     "7 Orange Shigatsu wa Kimi no Uso",
