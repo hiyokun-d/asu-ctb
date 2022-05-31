@@ -622,24 +622,22 @@ function game() {
 					audioCtx.resume();
 					music_changes_button_playPause.innerText = "||";
 				}, 2500)
+			} else {
+				if (!game_over && health > 0 && music.ended) {
+					music.muted = true;
+					music.autoplay = false;
+					music.currentTime = 0;
+					music.pause();
+					music_order = Math.floor(Math.random() * music_list.length)
+					music.src = `music/${music_randomize_Play}.mp3`;
+					game_over = true;
+					music_canvas.animation = "open_up 0.5s forwards ease-in-out";
+					music_canvasP.innerText = `THE MUSIC IS ENDED play it once more \n score: ${score} & miss: ${miss} \n just try again on this song or you can change the song ➤➤➤`;
+				}
 			}
 		});
 
-
-		if (player_focus) {
 			
-			if (!game_over && health > 0 && music.ended) {
-				music.muted = true;
-				music.autoplay = false;
-				music.currentTime = 0;
-				music.pause();
-				music_order = Math.floor(Math.random() * music_list.length)
-				music.src = `music/${music_randomize_Play}.mp3`;
-				game_over = true;
-				music_canvas.animation = "open_up 0.5s forwards ease-in-out";
-				music_canvasP.innerText = `THE MUSIC IS ENDED play it once more \n score: ${score} & miss: ${miss} \n just try again on this song or you can change the song ➤➤➤`;
-			}
-		}
 			/* end of visualizer animation out */
 
 		let lightY_position = canvas.height - 30;
