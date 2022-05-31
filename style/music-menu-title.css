@@ -1,0 +1,43 @@
+#music-title-menu {
+    position: absolute;
+    transform: translateX(535px) translateY(0px);
+    z-index: 10;
+    height: 800px;
+    width: 360px;
+    border-radius: 15px;
+    border: 1px solid rgba(155, 155, 155, 0.304);
+    background: linear-gradient(rgba(59, 59, 59, 0.885), rgba(98, 98, 98, 0.885));
+    text-align: justify;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+#music-title-menu::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.title {
+    color: rgb(130, 129, 129);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    transition: font-size 1s, color 0.5s, text-align 0.5s, text-shadow 1s, background 1s;
+}
+
+.title.active {
+    color: rgb(255, 255, 255);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    transition: font-size 1s, color 0.5s, text-align 0.5s, text-shadow 1s;
+}
+
+.title:hover {
+    font-size: 1.1em;
+    text-shadow: 5px 5px 5px black;
+    color: rgb(255, 255, 255);
+    background: linear-gradient(rgba(189, 225, 221, 0.885), rgba(76, 112, 109, 0.885));
+}
+
+.title.active:hover {
+    text-shadow: 5px 5px 5px black;
+    color: rgb(253, 149, 149);
+}

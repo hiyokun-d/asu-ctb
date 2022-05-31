@@ -2,8 +2,6 @@ let in_game_menu_style = in_game_menu.style
 
 function screen_adjusment() {
     requestAnimationFrame(screen_adjusment)
-    let music_canvas = document.querySelector('#music_canvas')
-    let music_canvasP = document.querySelector('#music_canvas > p')
 
     let music_config_adjust = document.querySelector('#music_config_adjust')
     let music_title_adjust = document.querySelector('#music_title_adjust #music_title_adjust')
@@ -15,16 +13,26 @@ function screen_adjusment() {
     let style_music_canvasP = music_canvasP.style
 
     if (music.paused) {
-        music_canvas.addEventListener("click", (e) => {
-            music.play();
-            music.muted = false;
-            music.controls = true;
-            music.autoplay = true;
-            audioCtx.resume();
-        });
+        setTimeout(() => {
+            music_canvas.addEventListener("click", (e) => {
+                if (music.paused) {
+                    music_order = Math.floor(Math.random() * music_list.length);
+                    music_randomize_Play = music_list[music_order];
+                    music.src = `music/${music_randomize_Play}.mp3`;
+                    music.play();
+                    health = 100;
+                    music.muted = false;
+                    music.controls = true;
+                    music.autoplay = true;
+                    audioCtx.resume();
+                    music_changes_button_playPause.innerText = "||";
+                }
+            });
+        }, 1000)
     }
 
     if (window.innerWidth < 1440) {
+        music_title_menu.style.display = "none"
         canvas.width = 700
         in_game_menu_style.animation = "width_change 1s forwards"
 
@@ -63,6 +71,7 @@ function screen_adjusment() {
             }, 2000)
         }
     } else {
+        music_title_menu.style.display = "block"
         canvas.width = 700
         canvas.height = 800
 
