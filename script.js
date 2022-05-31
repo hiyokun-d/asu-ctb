@@ -635,9 +635,7 @@ function game() {
 					music_canvasP.innerText = `THE MUSIC IS ENDED play it once more \n score: ${score} & miss: ${miss} \n just try again on this song or you can change the song ➤➤➤`;
 				}
 			}
-		});
-
-			
+		});		
 			/* end of visualizer animation out */
 
 		let lightY_position = canvas.height - 30;
