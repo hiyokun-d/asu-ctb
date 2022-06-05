@@ -135,7 +135,8 @@ let music_list = [
     "YOASOBI Ano Yume wo Nazotte",
     "YUME NO YOU NA DR STONE ENDING 2 YUSUKE SAEKI ROMAJII",
     "Zenryoku ShounenEka Gustiwana - Nada Syakira Cover",
-    "Zenryoku ShounenSukima Switch - Indonesian Version"
+    "Zenryoku ShounenSukima Switch - Indonesian Version",
+    "remixed Nobody Like U - Thai McGrath ft FOXCHASE"
 ];
 
 function getRMS(array) {
