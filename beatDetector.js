@@ -136,7 +136,9 @@ let music_list = [
     "YUME NO YOU NA DR STONE ENDING 2 YUSUKE SAEKI ROMAJII",
     "Zenryoku ShounenEka Gustiwana - Nada Syakira Cover",
     "Zenryoku ShounenSukima Switch - Indonesian Version",
-    "remixed Nobody Like U - Thai McGrath ft FOXCHASE"
+    "remixed Nobody Like U - Thai McGrath ft FOXCHASE",
+        "Kobo Kanaeru恋色Koiiro - Mosawo Acoustic AI Cover  KAN-ROM-IND Color Coded Lyrics",
+    "AYU TING TING - TATITUT (Lirik Lagu)"
 ];
 
 function getRMS(array) {
